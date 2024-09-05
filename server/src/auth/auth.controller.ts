@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { SignIn } from 'src/dto/user/signInDto.dto';
+import { SignIn } from 'src/dto/signInDto.dto';
 import { AuthGuard } from './auth.guard';
 
 @Controller('auth')
