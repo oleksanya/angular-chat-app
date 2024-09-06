@@ -30,14 +30,17 @@ export class ChatService {
       .exec();
   }
 
-  async getChatById(chatId: string): Promise<any> {
+  async getChatById(chatId: string): Promise<Chat> {
     return this.chatModel
       .findById(chatId)
       .populate({
         path: 'messages',
-        populate: {
-          path: 'senderId',
-        },
+        model: 'Message',
+      })
+      .populate({
+        path: 'participants',
+        model: 'User',
+        select: '-password -email -friends -chats', //exclude sensitive userdata
       })
       .exec();
   }
