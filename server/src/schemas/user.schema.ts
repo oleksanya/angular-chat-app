@@ -8,14 +8,23 @@ export class User {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   _id: Types.ObjectId;
 
-  @Prop()
+  @Prop({ required: true })
   username: string;
 
   @Prop({ required: true })
   password: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, unique: true })
   email: string;
+
+  @Prop({ type: String, default: '' })
+  profileImage: string;
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Chat' }] })
+  chats: Types.ObjectId[];
+
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'User' }] })
+  friends: Types.ObjectId[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
