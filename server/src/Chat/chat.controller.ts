@@ -16,4 +16,9 @@ export class ChatController {
   async getChatDetails(@Param('chatId') chatId: string) {
     return this.chatService.getChatById(chatId);
   }
+
+  @Get('/lastMessage/:chatId')
+  async getLastMessage(@Param('chatId') chatId: string) {
+    return this.chatService.getLastChatMessage(chatId);
+  }
 }

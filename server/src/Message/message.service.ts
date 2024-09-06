@@ -16,14 +16,29 @@ export class MessageService {
     const newMessage = new this.messageModel(createMessageDto);
     const savedMessage = await newMessage.save();
 
-    await this.chatModel.findByIdAndUpdate(createMessageDto.chatId, {
-      lastMessage: {
-        content: createMessageDto.content,
-        senderId: createMessageDto.senderId,
-      },
-    });
+    // Update the chat document
+    await this.chatModel
+      .findByIdAndUpdate(
+        createMessageDto.chatId,
+        {
+          $push: {
+            messages: savedMessage._id,
+          },
+          $set: {
+            lastMessage: {
+              content: createMessageDto.content,
+              senderId: createMessageDto.senderId,
+              timestamp: new Date(),
+            },
+          },
+        },
+        { new: true },
+      )
+      .exec();
+
     return savedMessage;
   }
+
   async getMessageById(messageId: string): Promise<Message> {
     return this.messageModel.findById(messageId).exec();
   }

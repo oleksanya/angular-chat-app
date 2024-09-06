@@ -44,4 +44,8 @@ export class ChatService {
       })
       .exec();
   }
+
+  async getLastChatMessage(chatId: string): Promise<Message> {
+    return this.chatModel.findOne({ _id: chatId }, 'lastMessage');
+  }
 }

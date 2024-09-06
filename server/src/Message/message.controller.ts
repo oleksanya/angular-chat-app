@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { CreateMessageDto } from './dto/createMessage.dto';
 
-//should be tested
 @Controller('message')
 export class MessageController {
   constructor(private messageService: MessageService) {}
@@ -17,16 +16,11 @@ export class MessageController {
     return this.messageService.getMessageById(id);
   }
 
-  @Put(':id')
+  @Post(':id')
   async updateMessage(
     @Param('id') id: string,
     @Body() updateMessageDto: CreateMessageDto,
   ) {
     return this.messageService.updateMessage(id, updateMessageDto);
-  }
-
-  @Get('lastMessage')
-  async getLastChatMessage(@Param('chatId') chatId: string) {
-    console.log(chatId);
   }
 }
