@@ -10,11 +10,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { UserCreds } from 'src/dto/user-creds.dto';
+import { UserCreds } from 'src/User/dto/user-creds.dto';
+import { ChatService } from 'src/Chat/chat.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private chatService: ChatService,
+  ) {}
 
   @Post('sign-up')
   async signUp(@Body() body: UserCreds) {
