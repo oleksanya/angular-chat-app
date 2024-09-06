@@ -4,6 +4,10 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { ChatModule } from './Chat/chat.module';
+import { MessageModule } from './Message/message.module';
+import { UserProfileModule } from './User-profile/user-profile.module';
+
 @Module({
   imports: [
     MongooseModule.forRoot(
@@ -11,6 +15,9 @@ import { UserModule } from './user/user.module';
     ),
     UserModule,
     AuthModule,
+    ChatModule,
+    MessageModule,
+    UserProfileModule,
   ],
   controllers: [AppController],
   providers: [AppService],
