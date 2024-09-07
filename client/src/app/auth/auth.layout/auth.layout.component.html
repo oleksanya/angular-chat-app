@@ -1,0 +1,11 @@
+<div class="auth-container">
+  <div class="auth-toggle">
+    <button (click)="toggleForm()">
+      {{ isLoginMode ? 'Sign Up' : 'Login' }}
+    </button>
+  </div>
+  
+  <app-login *ngIf="isLoginMode"></app-login>
+
+  <app-register *ngIf="!isLoginMode"></app-register>
+</div>
