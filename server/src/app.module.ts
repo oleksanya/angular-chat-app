@@ -6,17 +6,18 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { ChatModule } from './Chat/chat.module';
 import { MessageModule } from './Message/message.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot(
-      'mongodb+srv://oleksanya:3BV5lFjf14M7JXu7@cluster0.bckvy.mongodb.net/chat',
-    ),
+    ConfigModule.forRoot({ isGlobal: true }), // Load environment variables
+    MongooseModule.forRoot(process.env.DATABASE_URI),
     UserModule,
     AuthModule,
     ChatModule,
     MessageModule,
   ],
+
   controllers: [AppController],
   providers: [AppService],
 })
