@@ -80,3 +80,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.angular
