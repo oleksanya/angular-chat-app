@@ -1,0 +1,69 @@
+@import '../../../variables';
+
+.login-field {
+  height: 4.9rem;
+}
+
+.login-label {
+  display: block;
+  font-size: 1rem;
+  color: $accent-color;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.login-input {
+  width: 100%;
+  height: 3rem; // ~48px
+  padding: 0.4rem 1rem;
+  font-size: 1rem; // ~16px
+  border-radius: 2rem;
+  border: 0.1rem solid $accent-color;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    border-color: $highlight-color;
+  }
+}
+
+.login-message-error {
+  color: $error-color-red;
+  font-size: 0.875rem; 
+  margin-top: 0.2rem;
+  opacity: 0;
+  margin-left: 0.9rem;
+  transform: translateY(-0.5rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  /* Error message animation for when it becomes visible */
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.btn-submit {
+  border-radius: 2rem;
+  background-color: $highlight-color;
+  color: $white;
+  padding: 0.8rem 5rem;
+  font-size: 1rem; // ~16px
+  border: none;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  font-weight: 500;
+  display: block;
+  width: 100%;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: $dark-highlight;
+  }
+
+  &:disabled {
+    background-color: $secondary-color;
+    cursor: not-allowed;
+  }
+}

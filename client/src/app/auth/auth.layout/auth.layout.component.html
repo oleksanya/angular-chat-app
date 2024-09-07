@@ -1,11 +1,19 @@
-<div class="auth-container">
-  <div class="auth-toggle">
-    <button (click)="toggleForm()">
-      {{ isLoginMode ? 'Sign Up' : 'Login' }}
-    </button>
-  </div>
-  
-  <app-login *ngIf="isLoginMode"></app-login>
+<div class="auth-wrapper">
+  <h2 class="auth-main-heading">
+    Lystivka chat
+    <mat-icon class="icon">mail_outline</mat-icon>
+  </h2>
 
-  <app-register *ngIf="!isLoginMode"></app-register>
+  <div class="auth-container">
+    <h2 class="auth-heading">{{ isLoginMode ? 'Log in' : 'Register' }}</h2>
+
+    <app-login *ngIf="isLoginMode"></app-login>
+    <app-register *ngIf="!isLoginMode"></app-register>
+
+    <div class="auth-toggle">
+      <button class="btn-toggle" (click)="toggleForm()">
+        {{ isLoginMode ? 'Register' : 'Log in' }}
+      </button>
+    </div>
+  </div>
 </div>
