@@ -26,6 +26,7 @@ export class ChatItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.senderData = this.chatService.getSendersProfileImg(this.chat.participants[1]);
+    console.log(this.senderData)
     this.senderData.subscribe((user: any) => {
       this.senderImage = user.profileImage;
       this.senderName = user.username

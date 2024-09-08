@@ -35,5 +35,11 @@ export class ChatService {
     return this.http.get(`${constants.API_URL}/user/${senderId}`, { headers })
   }
 
+  getMessages(chatId: string): Observable<any> { 
+    let headers = new HttpHeaders();
 
+    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+
+    return this.http.get(`${constants.API_URL}/chats/getChat/${chatId}`, { headers });
+  }
 }

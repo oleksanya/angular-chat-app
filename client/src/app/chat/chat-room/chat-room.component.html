@@ -1,3 +1,14 @@
 <div class="chat-room-wrapper">
-  <p>Chat with: </p>
+  <div class="chat-room-header">
+    <app-profile [userImg]="senderImage"></app-profile>
+
+    <p class="chat-room-heading">{{ senderName }}</p>
+  </div>
+  <div class="chat-body">
+    <div class="message-item" *ngFor="let message of allMessages" >
+      <app-message [userImg]="senderImage" [message]="message" ></app-message>
+    </div>
+  </div>
+
+  <div class="chat-room-typing"></div>
 </div>  

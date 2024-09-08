@@ -1,0 +1,16 @@
+@import '../../../variables';
+
+:host { 
+  width: 100%;
+}
+.chat-room-header { 
+  display: flex;
+}
+.chat-room-wrapper {
+  background-color: $white;
+  height: 100%;
+  width: 100%;
+}
+.chat-room-heading { 
+  margin-left: 3rem;
+} 

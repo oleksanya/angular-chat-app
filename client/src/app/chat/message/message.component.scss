@@ -1,0 +1,48 @@
+@import '../../../variables';
+
+.messageFrom {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    margin-left: 0.8rem;
+}
+.messageTo {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    margin-right: 0.8rem;
+
+}
+
+
+.message-text-from {
+    background-color: $dark-highlight;
+    height: fit-content;
+    padding: 1rem;
+    width: fit-content;
+    max-width: 60%;
+    margin-left: 0.9rem;
+    margin-top: 1rem;
+    border-radius: 1.5rem;
+    color: $white;
+    font-size: 0.9rem;
+}   
+
+.message-text-to {
+    @extend .message-text-from;
+
+    background-color: $message-color;
+    color: $primary-color;
+}
+
+.message-time {
+    display: block;
+    width: 100%;
+    margin-left: 4rem;
+    margin-top: 0.8rem;
+    font-size: 0.8rem;
+    color: $grey-1;
+}

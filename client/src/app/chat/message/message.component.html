@@ -1,1 +1,11 @@
-<p>message works!</p>
+<div class="messageFrom">
+  <app-profile [userImg]="userImg"></app-profile>
+
+  <p class="message-text-from">
+      {{ message.content }}
+  </p>
+
+  <span class="message-time">
+      4/22/17. 4:00 AM
+  </span>
+</div>

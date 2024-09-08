@@ -27,7 +27,8 @@ export class AuthService {
 
         localStorage.setItem('user_token', access_token);
         localStorage.setItem('token_expiration', jwtDecode(access_token).exp!.toString());
-
+        localStorage.setItem('user_id', jwtDecode(access_token).sub!.toString());
+        
         this.router.navigateByUrl('/');
       } catch (err) {
         console.error(err);
@@ -49,6 +50,7 @@ export class AuthService {
         const access_token = data.access_token;
         localStorage.setItem('user_token', access_token);
         localStorage.setItem('token_expiration', jwtDecode(access_token).exp!.toString());
+        localStorage.setItem('user_id', jwtDecode(access_token).sub!.toString());
 
         this.router.navigateByUrl('/');
       } catch (err) {
