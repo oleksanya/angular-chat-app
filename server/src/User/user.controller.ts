@@ -24,11 +24,12 @@ export class UserController {
   async signUp(@Body() body: UserCreds) {
     const userExist = await this.userService.findByEmail(body.email);
 
-    if (userExist !== null) {
+    if (userExist) {
       throw new HttpException('User already exist', HttpStatus.CONFLICT);
     }
-    const user = await this.userService.createUser(body);
-    return { message: 'User registered successfully', user };
+    const access_token = await this.userService.createUser(body);
+
+    return { message: 'User registered successfully', access_token };
   }
 
   @Get()
