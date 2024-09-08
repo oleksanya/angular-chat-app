@@ -21,7 +21,6 @@ export class Chat {
     autopopulate: true,
   })
   lastSender: User;
-
   @Prop({
     type: Object,
     default: null,

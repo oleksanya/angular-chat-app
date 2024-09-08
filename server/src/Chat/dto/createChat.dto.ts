@@ -1,19 +1,10 @@
-import { IsArray, IsString, IsNotEmpty } from 'class-validator';
+import { IsString } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateChatDto {
-  @IsArray()
-  @IsNotEmpty()
-  participants: Types.ObjectId[];
   @IsString()
-  @IsNotEmpty()
-  lastMessageContent: string;
+  participant1: Types.ObjectId;
 
   @IsString()
-  @IsNotEmpty()
-  lastSender: string;
-
-  @IsString()
-  @IsNotEmpty()
-  content: string;
+  participant2: Types.ObjectId;
 }

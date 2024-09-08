@@ -3,19 +3,57 @@ import { Chat } from '../schemas/chat.schema';
 import { Model, Types } from 'mongoose';
 
 import { InjectModel } from '@nestjs/mongoose';
-import { CreateChatDto } from './dto/createChat.dto';
+
 import { Message } from 'src/schemas/message.schema';
+import { User } from 'src/schemas/user.schema';
 
 @Injectable()
 export class ChatService {
   constructor(
     @InjectModel(Chat.name) private chatModel: Model<Chat>,
     @InjectModel(Message.name) private messageModel: Model<Message>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  async createChat(createChatDto: CreateChatDto): Promise<Chat> {
-    const newChat = new this.chatModel(createChatDto);
-    return newChat.save();
+  async createChat(participant1: any, participant2: any): Promise<Chat> {
+    // Ensure participants are not the same
+    if (participant1 === participant2) {
+      throw new Error('Cannot create a chat with the same user.');
+    }
+
+    // Check if a chat already exists between these two participants
+    const existingChat = await this.chatModel.findOne({
+      participants: {
+        $all: [
+          new Types.ObjectId(participant1),
+          new Types.ObjectId(participant2),
+        ],
+      },
+    });
+    if (existingChat) {
+      throw new Error('A chat between these users already exists.');
+    }
+
+    const newChat = new this.chatModel({
+      participants: [
+        new Types.ObjectId(participant1),
+        new Types.ObjectId(participant2),
+      ],
+      messages: [],
+      lastSender: participant2,
+    });
+    const savedChat = await newChat.save();
+
+    await this.userModel.updateOne(
+      { _id: participant1 },
+      { $push: { chats: savedChat._id } },
+    );
+    await this.userModel.updateOne(
+      { _id: participant2 },
+      { $push: { chats: savedChat._id } },
+    );
+
+    return savedChat;
   }
 
   async findChatsByIds(chatIds: Types.ObjectId[]): Promise<Chat[]> {
