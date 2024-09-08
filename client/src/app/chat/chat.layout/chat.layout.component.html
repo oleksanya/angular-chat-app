@@ -4,8 +4,9 @@
   </div>
 
   <div class="chat">
-    <app-chat-list [chats]="chatData"></app-chat-list>
+    <app-chat-list [chats]="chatData" (onChatSelect)="getSelectedChat($event)"></app-chat-list>
 
-    <app-chat-room></app-chat-room>
+    <div *ngIf="selectedChat === null">Please, select chat</div>
+    <app-chat-room *ngIf="selectedChat !== null"></app-chat-room>
   </div>
 </div>

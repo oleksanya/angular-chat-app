@@ -1,9 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
 import { ProfileComponent } from "../../shared/components/profile/profile.component";
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatDeleteDialogComponent } from '../chat-delete-dialog/chat-delete-dialog.component';
+import { Chat } from '../../shared/chat.interface';
 
 @Component({
   selector: 'app-chat-item',
@@ -14,6 +15,8 @@ import { ChatDeleteDialogComponent } from '../chat-delete-dialog/chat-delete-dia
 })
 export class ChatItemComponent implements OnInit {
   @Input() chat: any;
+  @Output() chatSelected = new EventEmitter<Chat>();
+  
   senderData: any;
   senderImage: string = '';
   senderName: string = '';
@@ -56,9 +59,5 @@ export class ChatItemComponent implements OnInit {
 
   deleteChat(): void {
     console.log('deleted chat');
-  }
-
-  openChat() { 
-    console.log('clicked and opened chat');
   }
 }

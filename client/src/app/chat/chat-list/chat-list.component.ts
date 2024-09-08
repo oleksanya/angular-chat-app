@@ -1,7 +1,8 @@
 import { NgFor } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { ProfileComponent } from "../../shared/components/profile/profile.component";
 import { ChatItemComponent } from "../chat-item/chat-item.component";
+import { Chat } from '../../shared/chat.interface';
 
 @Component({
   selector: 'app-chat-list',
@@ -11,27 +12,25 @@ import { ChatItemComponent } from "../chat-item/chat-item.component";
   styleUrl: './chat-list.component.scss'
 })
 export class ChatListComponent implements OnInit{
-  @Input() chats: any[] = [];
+  @Input() chats: any;
   @Input() sendersImg!: string;
+
+  @Output() onChatSelect = new EventEmitter<Chat>();
   
   allUsers: any | undefined;
 
   constructor() { }
   ngOnInit(): void {
-    // console.log(this.chats);
+
   }
 
-
-  // async ngOnInit(): Promise<any> {
-  //   this.allUsers = await this.getUsers();
+  clickOnChat(chat: Chat): void {
+    console.log('hey: ', chat);
+    this.onChatSelect.emit(chat);
+  }
+  // ngOnChanges(changes: SimpleChanges) {
+  //   console.log(this.chats);
   // }
 
-  // async getUsers() {
-  //   return await this.dbService.getAllUsers();
-  // }
-
-  // catchEvent(ev: any): void {
-  //   this.chatData.onDataReceived(ev);
-  // }
-
+  
 }

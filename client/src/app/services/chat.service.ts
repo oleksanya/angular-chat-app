@@ -23,7 +23,6 @@ export class ChatService {
   getChatsData(): Observable<any> { 
     const userId = this.getUserId();
     let headers = new HttpHeaders();
-
     headers = headers.set('Content-Type', 'application/json; charset=utf-8');
 
     return this.http.get(`${constants.API_URL}/chats/getAll/${userId}`, { headers });
@@ -35,4 +34,6 @@ export class ChatService {
 
     return this.http.get(`${constants.API_URL}/user/${senderId}`, { headers })
   }
+
+
 }
