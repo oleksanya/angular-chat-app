@@ -1,0 +1,11 @@
+<div class="chat-item-wrapper" (click)="openChat()">
+  <app-profile [userImg]="senderImage"></app-profile>
+
+  <div>
+    <p class="list-title"> {{ senderName }}</p>
+
+    <p>{{ chat.lastMessage.content }}</p>
+    <span class="time">{{ lastMessageTime }}</span>
+  </div>
+  <mat-icon class="icon" (click)="openDeleteDialog($event)">delete</mat-icon>
+</div>
