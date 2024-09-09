@@ -5,11 +5,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatDeleteDialogComponent } from '../chat-delete-dialog/chat-delete-dialog.component';
 import { Chat } from '../../shared/chat.interface';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-chat-item',
   standalone: true,
-  imports: [ProfileComponent, MatIconModule],
+  imports: [ProfileComponent, MatIconModule, NgIf],
   templateUrl: './chat-item.component.html',
   styleUrl: './chat-item.component.scss'
 })
@@ -21,17 +22,28 @@ export class ChatItemComponent implements OnInit {
   senderImage: string = '';
   senderName: string = '';
   lastMessageTime: any;
+  lastMessage: any | null = null;
 
   constructor(private chatService: ChatService, public dialog: MatDialog) {}
 
   ngOnInit(): void {
-    this.senderData = this.chatService.getSendersProfileImg(this.chat.participants[1]);
-    console.log(this.senderData)
+    const currentUserId = localStorage.getItem('user_id');
+    const secondParticipant = this.chat.participants.find((userId: any) => userId !== currentUserId);
+    this.senderData = this.chatService.getSendersProfileImg(secondParticipant);
     this.senderData.subscribe((user: any) => {
       this.senderImage = user.profileImage;
       this.senderName = user.username
+      this.lastMessage = this.chat.lastMessage;
+
+      this.chatService.getMessages(this.senderData.chatId).subscribe((message: any) => {
+
+        if (this.chat._id === message.chatId) {
+          this.lastMessage = message.newMessage;
+          this.lastMessageTime = this.transformTimestamp(message.newMessage.timestamp);
+        }
+      });
     });
-    this.lastMessageTime = this.transformTimestamp(this.chat.lastMessage.timestamp);
+    this.lastMessageTime = this.chat.lastMessage ? this.transformTimestamp(this.chat.lastMessage.timestamp) : '';
   }
 
   transformTimestamp(timestamp: string | Date): string {
@@ -53,12 +65,15 @@ export class ChatItemComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.deleteChat();
+        this.deleteChat(this.chat._id);
       }
     });
   }
 
-  deleteChat(): void {
-    console.log('deleted chat');
+  deleteChat(chatId: string): void {
+    this.chatService.deleteChat(chatId).subscribe(() => {
+      console.log('Chat deleted');
+      // Optionally, update the UI to reflect the deletion
+    });
   }
 }

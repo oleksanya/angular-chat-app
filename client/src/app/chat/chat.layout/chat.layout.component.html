@@ -7,6 +7,6 @@
     <app-chat-list [chats]="chatData" (onChatSelect)="getSelectedChat($event)"></app-chat-list>
 
     <div *ngIf="selectedChat === null">Please, select chat</div>
-    <app-chat-room *ngIf="selectedChat !== null" [selectedChat]="selectedChat"></app-chat-room>
+    <app-chat-room *ngIf="selectedChat !== null" [chat]="selectedChat"></app-chat-room>
   </div>
 </div>

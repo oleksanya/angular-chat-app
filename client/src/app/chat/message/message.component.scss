@@ -1,48 +1,53 @@
 @import '../../../variables';
 
+// Wrapper for messages sent by the other user
 .messageFrom {
     display: flex;
-    flex-wrap: wrap;
+    align-items: flex-start;
     margin-bottom: 1.5rem;
-    align-items: center;
     margin-left: 0.8rem;
+    max-width: 70%;
 }
 .messageTo {
     display: flex;
     flex-direction: row-reverse;
-    flex-wrap: wrap;
+    align-items: flex-start;
     margin-bottom: 1.5rem;
-    align-items: center;
     margin-right: 0.8rem;
-
+    max-width: 100%;
 }
-
-
+.message-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-right: 3rem;
+}
+.message-text {
+    padding: 1rem;
+    border-radius: 1.5rem;    max-width: 20rem;
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    word-wrap: break-word;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
 .message-text-from {
     background-color: $dark-highlight;
-    height: fit-content;
-    padding: 1rem;
-    width: fit-content;
-    max-width: 60%;
-    margin-left: 0.9rem;
-    margin-top: 1rem;
-    border-radius: 1.5rem;
     color: $white;
-    font-size: 0.9rem;
-}   
-
-.message-text-to {
-    @extend .message-text-from;
-
-    background-color: $message-color;
-    color: $primary-color;
+    border-top-left-radius: 0;
+    margin-left: 0.9rem;
+    max-width: 100%;
 }
-
-.message-time {
-    display: block;
+.message-text-to {
+    background-color: $message-color;
+    color: $white;
+    border-top-right-radius: 0;
+    margin-right: 0.9rem;
     width: 100%;
-    margin-left: 4rem;
-    margin-top: 0.8rem;
-    font-size: 0.8rem;
+}
+.message-time {
+    font-size: 0.75rem;
     color: $grey-1;
+    text-align: right;
+    width: 100%;
 }

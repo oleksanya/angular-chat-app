@@ -1,11 +1,12 @@
-<div class="messageFrom">
-  <app-profile [userImg]="userImg"></app-profile>
+<div [ngClass]="{ 'messageFrom': !isFromSender(), 'messageTo': isFromSender() }">
+  <app-profile [userImg]="isFromSender() ? userImg : receiverImg"></app-profile>
 
-  <p class="message-text-from">
+  <div class="message-content-wrapper">
+    <p class="message-text" [ngClass]="{ 'message-text-from': !isFromSender(), 'message-text-to': isFromSender() }">
       {{ message.content }}
-  </p>
-
-  <span class="message-time">
-      4/22/17. 4:00 AM
-  </span>
+    </p>
+    <span class="message-time">
+      {{ transformTimestamp(message.timestamp) }}
+    </span>
+  </div>
 </div>

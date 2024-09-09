@@ -4,7 +4,8 @@
   <div>
     <p class="list-title"> {{ senderName }}</p>
 
-    <p>{{ chat.lastMessage.content }}</p>
+    <p *ngIf="lastMessage">{{ lastMessage.content }}</p>
+    <p *ngIf="!lastMessage">Send message first!</p>
     <span class="time">{{ lastMessageTime }}</span>
   </div>
   <mat-icon class="icon" (click)="openDeleteDialog($event)">delete</mat-icon>

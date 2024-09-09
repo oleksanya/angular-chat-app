@@ -1,4 +1,6 @@
 <div class="profile-wrapper">
-  <img src= "{{ userImg }}"class="user-img" alt="user"/>
-
+  <img *ngIf="userImg; else defaultIcon" [src]="userImg" class="user-img" alt="user" />
+  <ng-template #defaultIcon>
+    <mat-icon class="user-default-icon">person</mat-icon>
+  </ng-template>
 </div>

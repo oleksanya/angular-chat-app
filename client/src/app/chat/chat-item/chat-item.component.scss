@@ -4,6 +4,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid $dark-background-transperent; 
+  max-width: 20rem;
+  min-width: 15rem;
 
   div { 
     display: flex;
@@ -29,9 +33,13 @@ p {
   margin: 0;
   font-size: 1rem;
   color: $message-color;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;    
 }
 
 .icon { 
   color: $dark-background-transperent;
   cursor: pointer;
+  margin-left: auto; 
 }
