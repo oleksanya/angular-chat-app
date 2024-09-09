@@ -86,4 +86,28 @@ export class ChatService {
   async getLastChatMessage(chatId: string): Promise<Message> {
     return this.chatModel.findOne({ _id: chatId }, 'lastMessage');
   }
+
+  async deleteChat(chatId: string): Promise<void> {
+    await this.userModel.updateMany(
+      { chats: chatId },
+      { $pull: { chats: chatId } },
+    );
+
+    const chat = await this.chatModel
+      .findOne({ _id: chatId })
+      .select('messages')
+      .exec();
+
+    if (!chat) {
+      throw new Error('Chat not found');
+    }
+
+    const messageIds = chat.messages;
+
+    if (messageIds.length > 0) {
+      await this.messageModel.deleteMany({ _id: { $in: messageIds } });
+    }
+
+    await this.chatModel.deleteOne({ _id: chatId });
+  }
 }
