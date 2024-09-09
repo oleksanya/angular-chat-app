@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { ChatModule } from './Chat/chat.module';
 import { MessageModule } from './Message/message.module';
 import { ConfigModule } from '@nestjs/config';
+import { EventsModule } from './chatEvents/events.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
     AuthModule,
     ChatModule,
     MessageModule,
+    EventsModule,
   ],
 
   controllers: [AppController],

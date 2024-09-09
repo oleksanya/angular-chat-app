@@ -1,0 +1,29 @@
+@import '../../../variables';
+
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+button[mat-button] {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button[mat-button]:first-of-type {
+  background-color: $background-light-color;
+  color: $disabled-color;
+  margin-right: 1rem;
+}
+
+button[mat-button]:last-of-type {
+  background-color: $highlight-color;
+  color: $white;
+}
+
+button[mat-button]:hover {
+  background-color: $dark-highlight;
+}

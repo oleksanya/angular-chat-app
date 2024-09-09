@@ -4,12 +4,16 @@ import { User, UserDocument } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/createUserDto.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private jwtService: JwtService,
+  ) {}
 
-  async createUser(user: CreateUserDto): Promise<User> {
+  async createUser(user: CreateUserDto): Promise<string> {
     const { username, email, password } = user;
 
     const existingUser = await this.findByEmail(email);
@@ -24,7 +28,10 @@ export class UserService {
       email: user.email,
       password: hashedPassword,
     });
-    return newUser.save();
+    await newUser.save();
+    const payload = { email: newUser.email, sub: newUser._id };
+
+    return await this.jwtService.signAsync(payload);
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -32,7 +39,7 @@ export class UserService {
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.userModel.findById(id).exec();
+    return this.userModel.findById(id).select('-password -email').exec();
   }
 
   async deleteUser(userId: string): Promise<User | null> {

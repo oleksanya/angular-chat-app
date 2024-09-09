@@ -1,0 +1,5 @@
+<div class="chat-list-wrapper">
+  <div *ngFor="let chat of chats" class="chat-item">
+    <app-chat-item (click)="clickOnChat(chat)" [chat]="chat"></app-chat-item>
+  </div>
+</div>

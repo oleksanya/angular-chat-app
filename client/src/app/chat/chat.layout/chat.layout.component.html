@@ -1,0 +1,12 @@
+<div class="chat-wrapper">
+  <div> 
+    <app-header></app-header>
+  </div>
+
+  <div class="chat">
+    <app-chat-list [chats]="chatData" (onChatSelect)="getSelectedChat($event)"></app-chat-list>
+
+    <div *ngIf="selectedChat === null">Please, select chat</div>
+    <app-chat-room *ngIf="selectedChat !== null" [chat]="selectedChat"></app-chat-room>
+  </div>
+</div>

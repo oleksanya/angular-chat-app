@@ -1,0 +1,17 @@
+<div class="chat-room-wrapper">
+  <div class="chat-room-header">
+    <app-profile [userImg]="senderImage"></app-profile>
+
+    <p class="chat-room-heading">{{ senderName }}</p>
+  </div>
+  <div class="chat-body" #chatBody>
+    <div class="message-item" *ngFor="let message of allMessages" >
+      <app-message [userImg]="userImage" [receiverImg]="senderImage" [message]="message" ></app-message>
+    </div>
+  </div>
+
+  <div class="chat-room-typing">
+    <input #mymessage class="message-input" id="message" placeholder="Message" value="" type="text" />
+  <button (click)="sendMessage()">send</button>
+  </div>
+</div>  
