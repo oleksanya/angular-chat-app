@@ -16,13 +16,10 @@ export class MessageComponent implements OnInit{
   @Input() receiverImg!: string;
 
   constructor(private chatService: ChatService) { }
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   console.log('one', this.message);
-  // }
+
 
   ngOnInit(): void {
-    // console.log('====== CURENT', this.currentUserImg);
-    // console.log('====== SENDER', this.userImg!)
+
   }
 
   isFromSender() {

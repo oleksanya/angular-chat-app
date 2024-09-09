@@ -52,7 +52,6 @@ export class ChatLayoutComponent implements OnInit, OnDestroy {
   }
 
   getSelectedChat(chat: Chat): void {
-    console.log('Here in loyout chat: ', chat);
     this.selectedChat = chat;
   }
 }

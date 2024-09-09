@@ -73,7 +73,6 @@ export class ChatItemComponent implements OnInit {
   deleteChat(chatId: string): void {
     this.chatService.deleteChat(chatId).subscribe(() => {
       console.log('Chat deleted');
-      // Optionally, update the UI to reflect the deletion
     });
   }
 }

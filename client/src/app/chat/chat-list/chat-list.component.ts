@@ -25,12 +25,7 @@ export class ChatListComponent implements OnInit{
   }
 
   clickOnChat(chat: Chat): void {
-    // console.log('hey: ', chat);
     this.onChatSelect.emit(chat);
   }
-  // ngOnChanges(changes: SimpleChanges) {
-  //   console.log(this.chats);
-  // }
-
-  
+ 
 }
