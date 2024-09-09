@@ -21,3 +21,12 @@ Lystivka is a real-time chat application built with modern web technologies. It 
   - **JWT**: For user authentication and authorization.
   - **TypeScript**: For static type checking in both frontend and backend.
 
+
+https://github.com/user-attachments/assets/ad03e32b-c791-4a6d-8af2-5c86fa5ff4ce
+
+![image](https://github.com/user-attachments/assets/60ef4d58-b2ae-4bf4-8dd5-e1db1b52da69)
+
+![image](https://github.com/user-attachments/assets/6a8c800a-53cd-46ed-a6e0-05334ffab59a)
+
+![image](https://github.com/user-attachments/assets/c78e81e8-e2ee-469b-b6b9-d9ef1a32123e)
+![image](https://github.com/user-attachments/assets/0d229310-29e1-4057-8334-73403ff837ff)
