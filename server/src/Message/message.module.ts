@@ -14,5 +14,6 @@ import { Chat, ChatSchema } from 'src/schemas/chat.schema';
   ],
   controllers: [MessageController],
   providers: [MessageService],
+  exports: [MessageService],
 })
 export class MessageModule {}
