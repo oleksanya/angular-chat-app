@@ -1,4 +1,4 @@
-@import '../../../variables';
+@use '../../../variables' as *;
 
 .chat-item-wrapper { 
   display: flex;

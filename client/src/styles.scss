@@ -1,5 +1,5 @@
-@import 'normalize.css';
-@import './variables';
+@use 'normalize.css';
+@use './variables' as *;
 
 html, body { 
   height: 100%;
