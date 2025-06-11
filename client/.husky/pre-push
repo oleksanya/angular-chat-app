@@ -1,0 +1,12 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run tests before pushing to ensure nothing is broken
+echo "🧪 Running tests before push..."
+npm run test -- --watch=false --browsers=ChromeHeadless || (echo "❌ Tests failed" && exit 1)
+
+# Run build to ensure production build works
+echo "🏗️ Checking production build..."
+npm run build --silent || (echo "❌ Production build failed" && exit 1)
+
+echo "✅ Pre-push checks passed! Ready to push 🚀"

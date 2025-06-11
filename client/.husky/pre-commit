@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run lint-staged to format and lint only staged files
+npx lint-staged
+
+# Run type checking
+npm run build --silent || (echo "❌ TypeScript compilation failed" && exit 1)
+
+echo "✅ Pre-commit checks passed!"
