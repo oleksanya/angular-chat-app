@@ -12,10 +12,21 @@ export interface NewMessage {
 }
 @Injectable()
 export class ChatService {
-  private socket = io(constants.API_URL);
+  private socket = io(constants.API_URL, {
+    autoConnect: false,
+    transports: ['websocket', 'polling'],
+    timeout: 5000,
+    forceNew: true
+  });
 
   constructor(private http: HttpClient) {
+    this.socket.on('connect_error', (error) => {
+      console.warn('Socket connection error:', error);
+    });
     
+    this.socket.on('disconnect', (reason) => {
+      console.warn('Socket disconnected:', reason);
+    });
   }
 
   getUserId(): string {
@@ -52,11 +63,19 @@ export class ChatService {
 
     return this.http.get(`${constants.API_URL}/chats/getChat/${chatId}`, { headers });
   }
+  connectSocket() {
+    if (!this.socket.connected) {
+      this.socket.connect();
+    }
+  }
 
   sendMessage(messageData: NewMessage) {
     if (messageData.content === '') {
       return;
     }
+
+    // Ensure socket is connected before sending
+    this.connectSocket();
 
     this.socket.emit(
       'message', 
@@ -68,6 +87,9 @@ export class ChatService {
   }
 
   getMessages(chatId?: string) {
+    // Ensure socket is connected before listening
+    this.connectSocket();
+    
     let observable = new Observable<any>(observer => {
       this.socket.on('message', (data) => {
         if (chatId && data.chatId === chatId) {
@@ -85,6 +107,7 @@ export class ChatService {
   }
 
   joinChat(chatId: string) {
+    this.connectSocket();
     this.socket.emit('joinChat', chatId);
   }
 

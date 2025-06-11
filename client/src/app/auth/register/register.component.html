@@ -1,6 +1,5 @@
-<form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">
-  <div class="register-field">
-    <input class="register-input" id="username" placeholder="Username" formControlName="username" type="text" />
+<form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">  <div class="register-field">
+    <input class="register-input" id="username" placeholder="Username" formControlName="username" type="text" autocomplete="username" />
     
     <div class="register-message-error" 
       [class.visible]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
@@ -9,7 +8,7 @@
   </div>
 
   <div class="register-field">
-    <input class="register-input" id="email" placeholder="Email" formControlName="email" type="email" />
+    <input class="register-input" id="email" placeholder="Email" formControlName="email" type="email" autocomplete="email" />
     
     <div class="register-message-error" 
       [class.visible]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
@@ -18,7 +17,7 @@
   </div>
 
   <div class="register-field">
-    <input class="register-input" id="password" placeholder="Password" formControlName="password" type="password" />
+    <input class="register-input" id="password" placeholder="Password" formControlName="password" type="password" autocomplete="new-password" />
     
     <div class="register-message-error" 
       [class.visible]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
