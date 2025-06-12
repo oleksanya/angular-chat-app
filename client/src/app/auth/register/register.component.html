@@ -10,9 +10,7 @@
     />
 
     @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched) {
-      <div class="register-message-error visible">
-        Please enter a username.
-      </div>
+      <div class="register-message-error visible">Please enter a username.</div>
     }
   </div>
 
@@ -27,9 +25,7 @@
     />
 
     @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
-      <div class="register-message-error visible">
-        Please enter a valid email.
-      </div>
+      <div class="register-message-error visible">Please enter a valid email.</div>
     }
   </div>
 
@@ -44,9 +40,7 @@
     />
 
     @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
-      <div class="register-message-error visible">
-        Password must be at least 4 characters long.
-      </div>
+      <div class="register-message-error visible">Password must be at least 4 characters long.</div>
     }
   </div>
 
