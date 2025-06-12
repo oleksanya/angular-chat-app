@@ -1,6 +1,6 @@
-@use '../../../../variables' as *;
+@use 'variables' as *;
 
-.header-wrapper { 
+.header-wrapper {
   height: 3rem;
   display: flex;
   background-color: $white;
@@ -8,7 +8,7 @@
   justify-content: space-between;
 }
 
-.header-logo-container { 
+.header-logo-container {
   display: flex;
   align-items: center;
   text-align: center;
@@ -18,11 +18,11 @@
   margin-left: 3rem;
 }
 
-.header-heading { 
+.header-heading {
   margin: 0;
   margin-right: 1rem;
 }
-.log-out { 
+.log-out {
   margin-right: 2rem;
   display: flex;
   align-items: center;
@@ -30,11 +30,11 @@
   width: 6rem;
   text-align: center;
 
-  p { 
+  p {
     margin: 0;
   }
 }
-.exit-icon { 
+.exit-icon {
   color: $dark-highlight;
   text-align: center;
   cursor: pointer;
