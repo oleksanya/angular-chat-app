@@ -1,22 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
+import { Chat } from '../../chat.interface';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatIconModule, NgIf],
+  imports: [MatIconModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit {
-  @Input() chat!: any;
-  @Input() userImg!: string;
+export class ProfileComponent {
+  chat = input<Chat>();
+  userImg = input<string>();
 
-  constructor(private userService: UserService) {}
+  userService = inject(UserService);
 
-  ngOnInit(): void {
-    console.log('from app profile',this.userImg)
-  }
+  constructor() {}
 }

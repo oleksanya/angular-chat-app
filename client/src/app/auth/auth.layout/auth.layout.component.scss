@@ -1,4 +1,4 @@
-@use '../../../variables' as *;
+@use 'variables' as *;
 
 .auth-container {
   width: 40%;
@@ -50,7 +50,7 @@
   margin-right: auto;
   cursor: pointer;
 }
-.auth-toggle { 
+.auth-toggle {
   margin-top: 1rem;
   padding-top: 1rem;
   width: 50%;

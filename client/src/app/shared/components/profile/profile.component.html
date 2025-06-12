@@ -1,6 +1,7 @@
 <div class="profile-wrapper">
-  <img *ngIf="userImg; else defaultIcon" [src]="userImg" class="user-img" alt="user" />
-  <ng-template #defaultIcon>
+  @if (userImg()) {
+    <img [src]="userImg()" class="user-img" alt="user" />
+  } @else {
     <mat-icon class="user-default-icon">person</mat-icon>
-  </ng-template>
+  }
 </div>

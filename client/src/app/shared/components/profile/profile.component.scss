@@ -1,6 +1,6 @@
-@use '../../../../variables' as *;
+@use 'variables' as *;
 
-.profile-wrapper { 
+.profile-wrapper {
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
@@ -18,12 +18,12 @@
   object-fit: cover;
 }
 
-.user-default-icon { 
+.user-default-icon {
   font-size: 1.5rem;
   color: $secondary-color;
   background-color: $background-color;
   border-radius: 50%;
-  width: 2.5rem;  
+  width: 2.5rem;
   height: 2.5rem;
   display: flex;
   align-items: center;
