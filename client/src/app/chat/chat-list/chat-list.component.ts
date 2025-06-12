@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 import { ChatItemComponent } from '../chat-item/chat-item.component';
-import { Chat } from '../../shared/chat.interface';
+import { Chat } from '../../interfaces/chat.interface';
 
 @Component({
   selector: 'app-chat-list',

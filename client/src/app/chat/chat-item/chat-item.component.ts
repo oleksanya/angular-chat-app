@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core';
 import { ChatService } from '../../services/chat.service';
-import { ProfileComponent } from '../../shared/components/profile/profile.component';
+import { ProfileComponent } from '../../../components/profile/profile.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ChatDeleteDialogComponent } from '../chat-delete-dialog/chat-delete-dialog.component';
@@ -17,7 +17,7 @@ import {
   User,
   Message,
   NewMessageEvent,
-} from '../../shared/chat.interface';
+} from '../../interfaces/chat.interface';
 import { Subscription } from 'rxjs';
 
 @Component({

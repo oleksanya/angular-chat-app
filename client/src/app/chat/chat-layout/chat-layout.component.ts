@@ -1,11 +1,11 @@
 import { Component, OnDestroy, OnInit, signal, inject } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
-import { HeaderComponent } from '../../shared/components/header/header.component';
+import { HeaderComponent } from '../../../components/header/header.component';
 import { ChatListComponent } from '../chat-list/chat-list.component';
 
 import { ChatService } from '../../services/chat.service';
-import { Chat, User } from '../../shared/chat.interface';
+import { Chat, User } from '../../interfaces/chat.interface';
 import { ChatRoomComponent } from '../chat-room/chat-room.component';
 
 @Component({

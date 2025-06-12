@@ -1,7 +1,7 @@
 import { Component, inject, input } from '@angular/core';
-import { UserService } from '../../../services/user.service';
+import { UserService } from '../../app/services/user.service';
 import { MatIconModule } from '@angular/material/icon';
-import { Chat } from '../../chat.interface';
+import { Chat } from '../../app/interfaces/chat.interface';
 
 @Component({
   selector: 'app-profile',

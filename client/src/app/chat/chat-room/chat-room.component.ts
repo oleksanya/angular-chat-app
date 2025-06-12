@@ -14,8 +14,8 @@ import {
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ChatService, NewMessage } from '../../services/chat.service';
-import { Chat, Message, User } from '../../shared/chat.interface';
-import { ProfileComponent } from '../../shared/components/profile/profile.component';
+import { Chat, Message, User } from '../../interfaces/chat.interface';
+import { ProfileComponent } from '../../../components/profile/profile.component';
 import { MessageComponent } from '../message/message.component';
 
 @Component({
