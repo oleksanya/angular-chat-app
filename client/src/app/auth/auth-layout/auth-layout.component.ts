@@ -7,8 +7,8 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-auth.layout',
   standalone: true,
   imports: [LoginComponent, RegisterComponent, MatIconModule],
-  templateUrl: './auth.layout.component.html',
-  styleUrl: './auth.layout.component.scss',
+  templateUrl: './auth-layout.component.html',
+  styleUrl: './auth-layout.component.scss',
 })
 export class AuthLayoutComponent {
   isLoginMode = true;

@@ -4,7 +4,7 @@ export const authRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./auth.layout/auth.layout.component').then(
+      import('./auth-layout/auth-layout.component').then(
         (m) => m.AuthLayoutComponent
       ),
   },
