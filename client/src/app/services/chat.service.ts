@@ -3,119 +3,146 @@ import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { constants } from '../constants';
 import { Observable } from 'rxjs';
-import io from 'socket.io-client';
+import io, { Socket } from 'socket.io-client';
+import {
+  User,
+  NewMessageEvent,
+  MessagesResponse,
+  Chat,
+} from '../shared/chat.interface';
 
 export interface NewMessage {
   content: string;
   senderId: string;
   chatId: string;
 }
-@Injectable()
+
+interface JwtPayload {
+  sub: string;
+  [key: string]: unknown;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
 export class ChatService {
-  private socket = io(constants.API_URL, {
-    autoConnect: false,
-    transports: ['websocket', 'polling'],
-    timeout: 5000,
-    forceNew: true
-  });
+  private socket: Socket;
 
   constructor(private http: HttpClient) {
-    this.socket.on('connect_error', (error) => {
-      console.warn('Socket connection error:', error);
+    this.socket = io(constants.API_URL, {
+      autoConnect: false,
+      transports: ['websocket', 'polling'],
+      timeout: 5000,
+      forceNew: true,
     });
-    
-    this.socket.on('disconnect', (reason) => {
-      console.warn('Socket disconnected:', reason);
+
+    this.socket.on('connect_error', () => {
+      // Socket connection error handled
+    });
+
+    this.socket.on('disconnect', () => {
+      // Socket disconnected handled
     });
   }
 
   getUserId(): string {
-    const user_token = localStorage.getItem('user_token');
+    const userToken = localStorage.getItem('user_token');
 
-    if (!user_token) {
+    if (!userToken) {
       throw new Error('No user token found');
     }
 
-    const decodedToken = jwtDecode(user_token);
-
-    return decodedToken.sub as string;
+    const decodedToken = jwtDecode<JwtPayload>(userToken);
+    return decodedToken.sub;
   }
 
-  getChatsData(): Observable<any> { 
+  getChatsData(): Observable<Chat[]> {
     const userId = this.getUserId();
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+    });
 
-    return this.http.get(`${constants.API_URL}/chats/getAll/${userId}`, { headers });
+    return this.http.get<Chat[]>(
+      `${constants.API_URL}/chats/getAll/${userId}`,
+      { headers }
+    );
   }
 
-  getSendersProfileImg(senderId: string): Observable<any> {
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
+  getSendersProfileImg(senderId: string): Observable<User> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+    });
 
-    return this.http.get(`${constants.API_URL}/user/${senderId}`, { headers })
+    return this.http.get<User>(`${constants.API_URL}/user/${senderId}`, {
+      headers,
+    });
   }
 
-  getAllMessages(chatId: string): Observable<any> { 
-    let headers = new HttpHeaders();
+  getAllMessages(chatId: string): Observable<MessagesResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
+    });
 
-    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-
-    return this.http.get(`${constants.API_URL}/chats/getChat/${chatId}`, { headers });
+    return this.http.get<MessagesResponse>(
+      `${constants.API_URL}/chats/getChat/${chatId}`,
+      { headers }
+    );
   }
-  connectSocket() {
+
+  connectSocket(): void {
     if (!this.socket.connected) {
       this.socket.connect();
     }
   }
 
-  sendMessage(messageData: NewMessage) {
-    if (messageData.content === '') {
+  sendMessage(messageData: NewMessage): void {
+    if (!messageData.content.trim()) {
       return;
     }
 
-    // Ensure socket is connected before sending
     this.connectSocket();
 
-    this.socket.emit(
-      'message', 
-      { 
-        chatId: messageData.chatId, 
-        content: messageData 
-      }
-    );
+    this.socket.emit('message', {
+      chatId: messageData.chatId,
+      content: messageData,
+    });
   }
 
-  getMessages(chatId?: string) {
-    // Ensure socket is connected before listening
+  getMessages(chatId?: string): Observable<NewMessageEvent> {
     this.connectSocket();
-    
-    let observable = new Observable<any>(observer => {
-      this.socket.on('message', (data) => {
+
+    return new Observable<NewMessageEvent>((observer) => {
+      this.socket.on('message', (data: NewMessageEvent) => {
         if (chatId && data.chatId === chatId) {
           observer.next(data);
         } else if (!chatId) {
           observer.next(data);
         }
-      }); 
+      });
+
+      return () => {
+        this.socket.off('message');
+      };
     });
-    return observable;
   }
 
-  disconnectFromSocket() {
+  disconnectFromSocket(): void {
     this.socket.disconnect();
   }
 
-  joinChat(chatId: string) {
+  joinChat(chatId: string): void {
     this.connectSocket();
     this.socket.emit('joinChat', chatId);
   }
 
   deleteChat(chatId: string): Observable<void> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json; charset=utf-8'
+      'Content-Type': 'application/json; charset=utf-8',
     });
 
-    return this.http.delete<void>(`${constants.API_URL}/chats/deleteChat/${chatId}`, { headers });
+    return this.http.delete<void>(
+      `${constants.API_URL}/chats/deleteChat/${chatId}`,
+      { headers }
+    );
   }
 }
