@@ -10,13 +10,16 @@ import { Chat } from '../../shared/chat.interface';
   styleUrl: './chat-list.component.scss',
 })
 export class ChatListComponent {
-  chats = input<Chat[]>();
-  sendersImg = input<string>();
+  chats = input<Chat[]>([]);
+  sendersImg = input<string>('');
   onChatSelect = output<Chat>();
-
-  allUsers: unknown | undefined;
+  onChatDeleted = output<Chat>();
 
   clickOnChat(chat: Chat): void {
     this.onChatSelect.emit(chat);
+  }
+
+  handleChatDeleted(chat: Chat): void {
+    this.onChatDeleted.emit(chat);
   }
 }
