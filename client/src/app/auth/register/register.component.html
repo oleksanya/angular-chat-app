@@ -1,29 +1,68 @@
-<form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">  <div class="register-field">
-    <input class="register-input" id="username" placeholder="Username" formControlName="username" type="text" autocomplete="username" />
-    
-    <div class="register-message-error" 
-      [class.visible]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+<form class="register-form" [formGroup]="registerForm" (ngSubmit)="onRegister()">
+  <div class="register-field">
+    <input
+      class="register-input"
+      id="username"
+      placeholder="Username"
+      formControlName="username"
+      type="text"
+      autocomplete="username"
+    />
+
+    @if (registerForm.get('username')?.invalid && registerForm.get('username')?.touched) {
+      <div class="register-message-error visible">
         Please enter a username.
-    </div>
+      </div>
+    }
   </div>
 
   <div class="register-field">
-    <input class="register-input" id="email" placeholder="Email" formControlName="email" type="email" autocomplete="email" />
-    
-    <div class="register-message-error" 
-      [class.visible]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+    <input
+      class="register-input"
+      id="email"
+      placeholder="Email"
+      formControlName="email"
+      type="email"
+      autocomplete="email"
+    />
+
+    @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+      <div class="register-message-error visible">
         Please enter a valid email.
-    </div>
+      </div>
+    }
   </div>
 
   <div class="register-field">
-    <input class="register-input" id="password" placeholder="Password" formControlName="password" type="password" autocomplete="new-password" />
-    
-    <div class="register-message-error" 
-      [class.visible]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+    <input
+      class="register-input"
+      id="password"
+      placeholder="Password"
+      formControlName="password"
+      type="password"
+      autocomplete="new-password"
+    />
+
+    @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+      <div class="register-message-error visible">
         Password must be at least 4 characters long.
-    </div>
+      </div>
+    }
   </div>
 
-  <button class="btn-submit" type="submit" [disabled]="registerForm.invalid">Sign Up</button>
+  @if (errorMessage()) {
+    <div class="register-field">
+      <div class="register-message-error visible">
+        {{ errorMessage() }}
+      </div>
+    </div>
+  }
+
+  <button class="btn-submit" type="submit" [disabled]="registerForm.invalid || isLoading()">
+    @if (!isLoading()) {
+      <span>Sign Up</span>
+    } @else {
+      <span>Signing up...</span>
+    }
+  </button>
 </form>
