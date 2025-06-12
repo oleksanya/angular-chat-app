@@ -1,11 +1,7 @@
 <div class="chat-list-wrapper">
   <div class="chat-item">
     @for (chat of chats(); track chat._id) {
-      <app-chat-item 
-        (click)="clickOnChat(chat)" 
-        (chatDeleted)="handleChatDeleted(chat)"
-        [chat]="chat">
-      </app-chat-item>
+      <app-chat-item (click)="clickOnChat(chat)" (chatDeleted)="handleChatDeleted(chat)" [chat]="chat"> </app-chat-item>
     } @empty {
       <div class="no-chats">No chats available. Start a new conversation!</div>
     }

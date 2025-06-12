@@ -14,10 +14,11 @@
     @if (isLoading()) {
       <div class="loading-message">Loading chats...</div>
     } @else {
-      <app-chat-list 
-        [chats]="chatData()" 
+      <app-chat-list
+        [chats]="chatData()"
         (onChatSelect)="getSelectedChat($event)"
-        (onChatDeleted)="handleChatDeleted($event)">
+        (onChatDeleted)="handleChatDeleted($event)"
+      >
       </app-chat-list>
 
       @if (selectedChat()) {
