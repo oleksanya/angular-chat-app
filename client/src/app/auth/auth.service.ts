@@ -1,62 +1,94 @@
-import { 
-  HttpClient,
-  HttpHeaders
-} from "@angular/common/http";
-import { jwtDecode } from "jwt-decode";
-import { Router } from "@angular/router";
-import { Injectable } from "@angular/core";
-import { constants } from "../constants";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { jwtDecode } from 'jwt-decode';
+import { Router } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { constants } from '../constants';
+import {
+  AuthResponse,
+  LoginRequest,
+  RegisterRequest,
+  JwtPayload,
+} from '../shared/interfaces/auth.interface';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {}
+  http = inject(HttpClient);
+  router = inject(Router);
 
-  login(email: string, password: string): void {
-    const body = { email, password };
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-    
-    this.http.post(`${constants.API_URL}/auth/login`, body, { headers }).subscribe((data: any) => {
-      try {
-        const access_token = data.access_token;
+  constructor() {}
 
-        localStorage.setItem('user_token', access_token);
-        localStorage.setItem('token_expiration', jwtDecode(access_token).exp!.toString());
-        localStorage.setItem('user_id', jwtDecode(access_token).sub!.toString());
-        
-        this.router.navigateByUrl('/');
-      } catch (err) {
-        console.error(err);
-      }
+  login(email: string, password: string): Observable<boolean> {
+    const body: LoginRequest = { email, password };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
     });
+
+    return this.http
+      .post<AuthResponse>(`${constants.API_URL}/auth/login`, body, {
+        headers,
+      })
+      .pipe(
+        map((data: AuthResponse) => {
+          try {
+            const access_token = data.access_token;
+            const decodedToken = jwtDecode<JwtPayload>(access_token);
+
+            localStorage.setItem('user_token', access_token);
+            localStorage.setItem(
+              'token_expiration',
+              decodedToken.exp.toString()
+            );
+            localStorage.setItem('user_id', decodedToken.sub.toString());
+
+            this.router.navigateByUrl('/');
+            return true;
+          } catch {
+            throw new Error('Failed to process authentication token');
+          }
+        }),
+        catchError(() => of(false))
+      );
   }
 
   register(
     username: string,
     email: string,
     password: string
-  ): void {
-    const body = { username, email, password };
-    let headers = new HttpHeaders();
-    headers = headers.set('Content-Type', 'application/json; charset=utf-8');
-
-    this.http.post(`${constants.API_URL}/user/sign-up`, body, { headers }).subscribe((data: any) => {
-      try {
-        const access_token = data.access_token;
-        localStorage.setItem('user_token', access_token);
-        localStorage.setItem('token_expiration', jwtDecode(access_token).exp!.toString());
-        localStorage.setItem('user_id', jwtDecode(access_token).sub!.toString());
-
-        this.router.navigateByUrl('/');
-      } catch (err) {
-        console.error(err);
-      }
+  ): Observable<boolean> {
+    const body: RegisterRequest = { username, email, password };
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json; charset=utf-8',
     });
+
+    return this.http
+      .post<AuthResponse>(`${constants.API_URL}/user/sign-up`, body, {
+        headers,
+      })
+      .pipe(
+        map((data: AuthResponse) => {
+          try {
+            const access_token = data.access_token;
+            const decodedToken = jwtDecode<JwtPayload>(access_token);
+
+            localStorage.setItem('user_token', access_token);
+            localStorage.setItem(
+              'token_expiration',
+              decodedToken.exp.toString()
+            );
+            localStorage.setItem('user_id', decodedToken.sub.toString());
+
+            this.router.navigateByUrl('/');
+            return true;
+          } catch {
+            throw new Error('Failed to process authentication token');
+          }
+        }),
+        catchError(() => of(false))
+      );
   }
 
   isAuthenticated(): boolean {
@@ -69,8 +101,10 @@ export class AuthService {
 
     const token_expiration = localStorage.getItem('token_expiration');
 
-    if (+token_expiration! < (Date.now() / 1000)) {
+    if (!token_expiration || +token_expiration < Date.now() / 1000) {
       localStorage.removeItem('user_token');
+      localStorage.removeItem('token_expiration');
+      localStorage.removeItem('user_id');
       this.router.navigateByUrl('/auth');
       return false;
     }
