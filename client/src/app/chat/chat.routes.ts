@@ -4,7 +4,7 @@ export const chatRoutes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import('./chat.layout/chat.layout.component').then(
+      import('./chat-layout/chat-layout.component').then(
         (m) => m.ChatLayoutComponent
       ),
   },
