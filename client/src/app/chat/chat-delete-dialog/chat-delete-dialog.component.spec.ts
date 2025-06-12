@@ -8,9 +8,8 @@ describe('ChatDeleteDialogComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ChatDeleteDialogComponent]
-    })
-    .compileComponents();
+      imports: [ChatDeleteDialogComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChatDeleteDialogComponent);
     component = fixture.componentInstance;
