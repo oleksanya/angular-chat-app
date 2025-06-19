@@ -7,7 +7,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { ChatService } from '../../services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { ProfileComponent } from '../../../components/profile/profile.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
