@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { constants } from '../core/constants';
+import { constants } from '../constants';
 import { Observable } from 'rxjs';
-import { User } from '../interfaces/chat.interface';
+import { User } from '../../interfaces/chat.interface';
 
 interface JwtPayload {
   sub: string;

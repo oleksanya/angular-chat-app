@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { constants } from '../core/constants';
+import { constants } from '../constants';
 import { Observable } from 'rxjs';
 import io, { Socket } from 'socket.io-client';
 import {
@@ -9,7 +9,7 @@ import {
   NewMessageEvent,
   MessagesResponse,
   Chat,
-} from '../interfaces/chat.interface';
+} from '../../interfaces/chat.interface';
 
 export interface NewMessage {
   content: string;

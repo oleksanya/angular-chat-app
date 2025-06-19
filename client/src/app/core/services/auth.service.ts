@@ -4,13 +4,13 @@ import { Router } from '@angular/router';
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { constants } from '../core/constants';
+import { constants } from '../constants';
 import {
   AuthResponse,
   LoginRequest,
   RegisterRequest,
   JwtPayload,
-} from '../interfaces/auth.interface';
+} from '../../interfaces/auth.interface';
 
 @Injectable({
   providedIn: 'root',
