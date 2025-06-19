@@ -1,5 +1,9 @@
 <div class="chat-list-wrapper">
-  <div *ngFor="let chat of chats" class="chat-item">
-    <app-chat-item (click)="clickOnChat(chat)" [chat]="chat"></app-chat-item>
+  <div class="chat-item">
+    @for (chat of chats(); track chat._id) {
+      <app-chat-item (click)="clickOnChat(chat)" (chatDeleted)="handleChatDeleted(chat)" [chat]="chat"> </app-chat-item>
+    } @empty {
+      <div class="no-chats">No chats available. Start a new conversation!</div>
+    }
   </div>
 </div>

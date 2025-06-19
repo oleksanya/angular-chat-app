@@ -11,7 +11,7 @@ import { EventsModule } from './chatEvents/events.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }), // Load environment variables
+    ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRoot(process.env.DATABASE_URI),
     UserModule,
     AuthModule,

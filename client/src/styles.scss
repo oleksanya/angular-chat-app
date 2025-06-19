@@ -1,12 +1,13 @@
 @use 'normalize.css';
-@use './variables' as *;
+@use 'variables' as *;
 
-html, body { 
+html,
+body {
   height: 100%;
   background-color: $dark-background-transperent;
-  }
-body { 
+}
+body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
   overflow: hidden;
 }

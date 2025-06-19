@@ -1,0 +1,34 @@
+<div class="chat-wrapper">
+  @if (error()) {
+    <div class="error-message">
+      <p>{{ error() }}</p>
+      <button (click)="clearError()">Dismiss</button>
+    </div>
+  }
+
+  <div>
+    <app-header></app-header>
+  </div>
+
+  <div class="chat">
+    @if (isLoading()) {
+      <div class="loading-message">Loading chats...</div>
+    } @else {
+      <app-chat-list
+        [chats]="chatData()"
+        (onChatSelect)="getSelectedChat($event)"
+        (onChatDeleted)="handleChatDeleted($event)"
+      >
+      </app-chat-list>
+
+      @if (selectedChat()) {
+        <app-chat-room [chat]="selectedChat()"></app-chat-room>
+      } @else {
+        <div class="no-chat-selected">
+          <h3>Welcome to Chat App</h3>
+          <p>Please select a chat to start messaging</p>
+        </div>
+      }
+    }
+  </div>
+</div>

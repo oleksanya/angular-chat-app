@@ -1,29 +1,58 @@
-import { Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { ChatService, NewMessage } from '../../services/chat.service';
-import { Chat } from '../../shared/chat.interface';
-import { ProfileComponent } from '../../shared/components/profile/profile.component';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  OnDestroy,
+  AfterViewChecked,
+  ViewChild,
+  signal,
+  inject,
+  input,
+  effect,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { ChatService, NewMessage } from '../../core/services/chat.service';
+import { Chat, Message, User } from '../../interfaces/chat.interface';
+import { ProfileComponent } from '../../../components/profile/profile.component';
 import { MessageComponent } from '../message/message.component';
-import { NgForOf } from '@angular/common';
 
 @Component({
   selector: 'app-chat-room',
   standalone: true,
-  imports: [ProfileComponent, MessageComponent, NgForOf],
+  imports: [ProfileComponent, MessageComponent],
   templateUrl: './chat-room.component.html',
-  styleUrl: './chat-room.component.scss'
+  styleUrl: './chat-room.component.scss',
 })
-export class ChatRoomComponent implements OnInit, OnChanges {
-  @ViewChild('mymessage') input: any;
-  @ViewChild('chatBody') chatBody!: ElementRef;
+export class ChatRoomComponent
+  implements OnInit, OnDestroy, AfterViewChecked, OnChanges
+{
+  @ViewChild('mymessage') input!: ElementRef<HTMLInputElement>;
+  @ViewChild('chatBody') chatBody!: ElementRef<HTMLDivElement>;
 
-  @Input() chat: any;
-  selectedChat: any;
-  allMessages: any;
-  senderImage!: string;
-  senderName!: string;
-  userImage!: string; 
+  chat = input<Chat | null>(null);
 
-  constructor(private chatService: ChatService) {}
+  allMessages = signal<Message[]>([]);
+  senderData = signal<User | null>(null);
+  senderImage = signal<string>('');
+  senderName = signal<string>('');
+  userImage = signal<string>('');
+  isLoading = signal<boolean>(false);
+  isSending = signal<boolean>(false);
+  error = signal<string | null>(null);
+
+  private chatService = inject(ChatService);
+  private destroy$ = new Subject<void>();
+
+  constructor() {
+    effect(() => {
+      const currentChat = this.chat();
+      if (currentChat) {
+        this.handleChatChange(currentChat);
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.getSenderData();
@@ -33,72 +62,176 @@ export class ChatRoomComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (this.chat) {
-      this.chatService.joinChat(this.getChatId());
-    }
-
-    if (changes['chat'] && this.chat) {
-      this.getSenderData();
-      this.allMessages = [];
-      this.getAllMessagesForThisChat();
+    const chatChange = changes['chat'];
+    if (chatChange && this.chat()) {
+      const currentChat = this.chat();
+      if (currentChat) {
+        this.chatService.joinChat(this.getChatId());
+        this.getSenderData();
+        this.allMessages.set([]);
+        this.getAllMessagesForThisChat();
+      }
     }
   }
 
-  ngAfterViewChecked() {
+  ngAfterViewChecked(): void {
     this.scrollToBottom();
   }
 
-  getSenderData() {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.chatService.disconnectFromSocket();
+  }
+
+  private handleChatChange(chat: Chat): void {
+    this.error.set(null);
+    this.isLoading.set(true);
+    this.chatService.joinChat(chat._id);
+  }
+
+  private getSenderData(): void {
     const currentUserId = localStorage.getItem('user_id');
-    const secondParticipant = this.chat.participants.find((userId: any) => userId !== currentUserId);
-    
-    this.selectedChat = this.chatService.getSendersProfileImg(secondParticipant);
-    this.selectedChat.subscribe((user: any) => {
-      this.senderImage = user.profileImage;
-      this.senderName = user.username
-    });
+    const currentChat = this.chat();
+
+    if (!currentUserId || !currentChat) {
+      this.error.set('Unable to load chat data');
+      return;
+    }
+
+    const secondParticipant = currentChat.participants.find(
+      (userId: string) => userId !== currentUserId
+    );
+
+    if (!secondParticipant) {
+      this.error.set('Chat participant not found');
+      return;
+    }
+
+    this.chatService
+      .getSendersProfileImg(secondParticipant)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (user: User) => {
+          this.senderData.set(user);
+          this.senderImage.set(user.profileImage || '');
+          this.senderName.set(user.username || 'Unknown');
+        },
+        error: () => {
+          this.error.set('Failed to load sender information');
+        },
+      });
   }
 
-  getUserData() {
-    const currentUserId = localStorage.getItem('user_id')!;
-    this.selectedChat = this.chatService.getSendersProfileImg(currentUserId);
-    this.selectedChat.subscribe((user: any) => {
-      this.userImage = user.profileImage;
-    });
+  private getUserData(): void {
+    const currentUserId = localStorage.getItem('user_id');
+
+    if (!currentUserId) {
+      this.error.set('User not authenticated');
+      return;
+    }
+
+    this.chatService
+      .getSendersProfileImg(currentUserId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (user: User) => {
+          this.userImage.set(user.profileImage || '');
+        },
+        error: () => {
+          this.error.set('Failed to load user information');
+        },
+      });
   }
 
-  getAllMessagesForThisChat() {
+  private getAllMessagesForThisChat(): void {
     const chatId = this.getChatId();
 
-    this.chatService.getAllMessages(chatId).subscribe((messages) => {
-      this.allMessages = messages.messages;
-    });
+    if (!chatId || chatId === 'id') {
+      this.error.set('Invalid chat ID');
+      return;
+    }
+
+    this.isLoading.set(true);
+    this.chatService
+      .getAllMessages(chatId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.allMessages.set(response.messages || []);
+          this.isLoading.set(false);
+        },
+        error: () => {
+          this.error.set('Failed to load messages');
+          this.isLoading.set(false);
+        },
+      });
   }
-  
-  subscribeToMessagesReceiving() {
-    this.chatService.getMessages().subscribe((message: any) => {
-      this.allMessages.push(message.newMessage);
-    });
+
+  private subscribeToMessagesReceiving(): void {
+    this.chatService
+      .getMessages()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (messageEvent) => {
+          if (messageEvent?.newMessage) {
+            this.allMessages.update((messages) => [
+              ...messages,
+              messageEvent.newMessage,
+            ]);
+          }
+        },
+        error: () => {
+          this.error.set('Failed to receive new messages');
+        },
+      });
   }
 
   getChatId(): string {
-    return this.chat?._id || 'id';
+    return this.chat()?._id || 'id';
   }
- 
-  sendMessage() {
-    const newMessageMetadata: NewMessage = {
-      content: this.input.nativeElement.value,
-      chatId: this.getChatId(),
-      senderId: localStorage.getItem('user_id')!
+
+  sendMessage(): void {
+    const messageContent = this.input.nativeElement.value.trim();
+    const currentUserId = localStorage.getItem('user_id');
+
+    if (!messageContent || !currentUserId) {
+      return;
     }
 
-    this.chatService.sendMessage(newMessageMetadata);
-    this.scrollToBottom();
-    this.input.nativeElement.value = '';
+    const chatId = this.getChatId();
+    if (chatId === 'id') {
+      this.error.set('Cannot send message: Invalid chat');
+      return;
+    }
+
+    this.isSending.set(true);
+
+    const newMessageMetadata: NewMessage = {
+      content: messageContent,
+      chatId: chatId,
+      senderId: currentUserId,
+    };
+
+    try {
+      this.chatService.sendMessage(newMessageMetadata);
+      this.input.nativeElement.value = '';
+      this.scrollToBottom();
+      this.isSending.set(false);
+    } catch {
+      this.error.set('Failed to send message');
+      this.isSending.set(false);
+    }
   }
 
-  scrollToBottom(): void {
-    const chatBodyElement = this.chatBody.nativeElement;
-    chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
+  private scrollToBottom(): void {
+    if (this.chatBody?.nativeElement) {
+      const chatBodyElement = this.chatBody.nativeElement;
+      chatBodyElement.scrollTop = chatBodyElement.scrollHeight;
+    }
+  }
+
+  clearError(): void {
+    this.error.set(null);
   }
 }

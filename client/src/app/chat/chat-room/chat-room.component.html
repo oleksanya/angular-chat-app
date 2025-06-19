@@ -1,17 +1,46 @@
 <div class="chat-room-wrapper">
-  <div class="chat-room-header">
-    <app-profile [userImg]="senderImage"></app-profile>
-
-    <p class="chat-room-heading">{{ senderName }}</p>
-  </div>
-  <div class="chat-body" #chatBody>
-    <div class="message-item" *ngFor="let message of allMessages" >
-      <app-message [userImg]="userImage" [receiverImg]="senderImage" [message]="message" ></app-message>
+  @if (error()) {
+    <div class="error-message">
+      <p>{{ error() }}</p>
+      <button (click)="clearError()">Dismiss</button>
     </div>
+  }
+
+  <div class="chat-room-header">
+    <app-profile [userImg]="senderImage()"></app-profile>
+    <p class="chat-room-heading">{{ senderName() }}</p>
+  </div>
+
+  <div class="chat-body" #chatBody>
+    @if (isLoading()) {
+      <div class="loading-message">Loading messages...</div>
+    } @else {
+      @for (message of allMessages(); track message._id || message.timestamp) {
+        <div class="message-item">
+          <app-message [userImg]="userImage()" [receiverImg]="senderImage()" [message]="message"> </app-message>
+        </div>
+      } @empty {
+        <div class="no-messages">No messages yet. Start the conversation!</div>
+      }
+    }
   </div>
 
   <div class="chat-room-typing">
-    <input #mymessage class="message-input" id="message" placeholder="Message" value="" type="text" />
-  <button (click)="sendMessage()">send</button>
+    <input
+      #mymessage
+      class="message-input"
+      id="message"
+      placeholder="Message"
+      type="text"
+      [disabled]="isSending()"
+      (keyup.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()" [disabled]="isSending()">
+      @if (isSending()) {
+        Sending...
+      } @else {
+        Send
+      }
+    </button>
   </div>
-</div>  
+</div>

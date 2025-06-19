@@ -9,16 +9,20 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
     }),
-  );
-
-  // CORS configuration
+  ); // CORS configuration
   app.enableCors({
-    origin: 'http://localhost:4200',
+    origin: [
+      'http://localhost:4200',
+      'http://localhost:4201',
+      'http://localhost:4202',
+    ],
     methods: ['GET', 'POST', 'DELETE'],
     credentials: true,
   });
 
-  await app.listen(process.env.PORT || 5000);
+  const port = process.env.PORT || 5000;
+  await app.listen(port);
+  console.log(`🚀 Server is running on http://localhost:${port}`);
 }
 
 bootstrap();

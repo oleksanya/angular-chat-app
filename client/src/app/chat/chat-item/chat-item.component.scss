@@ -1,28 +1,28 @@
-@use '../../../variables' as *;
+@use 'variables' as *;
 
-.chat-item-wrapper { 
+.chat-item-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  border-bottom: 1px solid $dark-background-transperent; 
+  border-bottom: 1px solid $dark-background-transperent;
   max-width: 20rem;
   min-width: 15rem;
 
-  div { 
+  div {
     display: flex;
     flex-direction: column;
     width: 70%;
     margin-left: 1rem;
   }
 }
-.list-title { 
+.list-title {
   font-weight: 600;
   color: $dark-highlight;
   font-size: 1.2rem;
   margin: 0 0 0.5rem;
 }
-.time { 
+.time {
   font-style: italic;
   color: $primary-color;
   font-size: 0.9rem;
@@ -35,11 +35,11 @@ p {
   color: $message-color;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;    
+  text-overflow: ellipsis;
 }
 
-.icon { 
+.icon {
   color: $dark-background-transperent;
   cursor: pointer;
-  margin-left: auto; 
+  margin-left: auto;
 }

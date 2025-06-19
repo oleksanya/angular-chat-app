@@ -1,4 +1,4 @@
-@use '../../../variables' as *;
+@use 'variables' as *;
 
 .login-field {
   height: 4.9rem;
@@ -30,12 +30,14 @@
 
 .login-message-error {
   color: $error-color-red;
-  font-size: 0.875rem; 
+  font-size: 0.875rem;
   margin-top: 0.2rem;
   opacity: 0;
   margin-left: 0.9rem;
   transform: translateY(-0.5rem);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 
   /* Error message animation for when it becomes visible */
   &.visible {

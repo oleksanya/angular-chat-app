@@ -1,4 +1,4 @@
-@use '../../../variables' as *;
+@use 'variables' as *;
 
 .register-form {
   max-width: 24rem;
@@ -32,7 +32,9 @@
   margin-left: 0.9rem;
   opacity: 0;
   transform: translateY(-0.5rem);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
 
   &.visible {
     opacity: 1;

@@ -1,16 +1,29 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './auth/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
     path: 'auth',
-    pathMatch: 'full',
-    loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule)
+    loadChildren: () => import('./auth/auth.routes').then((m) => m.authRoutes),
+    title: 'Authentication - Chat App',
   },
-  { 
+  {
+    path: 'chat',
+    loadChildren: () => import('./chat/chat.routes').then((m) => m.chatRoutes),
+    canActivate: [authGuard],
+    title: 'Chat - Chat App',
+  },
+  {
     path: '',
-    loadChildren: () => import('./chat/chat.module').then(m => m.ChatModule),
-    canActivate: [AuthGuard],
+    redirectTo: '/chat',
+    pathMatch: 'full',
   },
-  { path: '**', redirectTo: '/auth' }
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
+    title: 'Page Not Found - Chat App',
+  },
 ];
