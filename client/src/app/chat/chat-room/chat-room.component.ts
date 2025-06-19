@@ -13,7 +13,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { ChatService, NewMessage } from '../../services/chat.service';
+import { ChatService, NewMessage } from '../../core/services/chat.service';
 import { Chat, Message, User } from '../../interfaces/chat.interface';
 import { ProfileComponent } from '../../../components/profile/profile.component';
 import { MessageComponent } from '../message/message.component';

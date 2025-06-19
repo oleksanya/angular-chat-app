@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { UserService } from '../../app/services/user.service';
+import { UserService } from '../../app/core/services/user.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Chat } from '../../app/interfaces/chat.interface';
 

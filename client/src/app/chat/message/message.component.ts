@@ -1,7 +1,7 @@
 import { Component, input, inject, computed } from '@angular/core';
 import { ProfileComponent } from '../../../components/profile/profile.component';
 import { NgClass } from '@angular/common';
-import { ChatService } from '../../services/chat.service';
+import { ChatService } from '../../core/services/chat.service';
 import { Message } from '../../interfaces/chat.interface';
 
 @Component({
