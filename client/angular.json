@@ -27,7 +27,8 @@
             "inlineStyleLanguage": "scss",
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles"
+                "src/styles",
+                "src/assets/styles"
               ]
             },
             "assets": [
@@ -91,7 +92,8 @@
             "inlineStyleLanguage": "scss",
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles"
+                "src/styles",
+                "src/assets/styles"
               ]
             },
             "assets": [
